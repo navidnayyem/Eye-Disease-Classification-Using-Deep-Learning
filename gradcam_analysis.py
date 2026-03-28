@@ -1,13 +1,3 @@
-############################################################
-# GRAD-CAM ANALYSIS v2 — Eye Disease Classification
-# Improvements over v1:
-#   1. GradCAM++ (sharper, more localised heatmaps)
-#   2. Confidence % shown on every grid cell
-#   3. Optic disc crop preprocessing for glaucoma
-#   4. Cleaner grid layout with class confidence summary
-#   5. Side-by-side v1 vs v2 comparison output
-############################################################
-
 import os
 import json
 import warnings
@@ -41,7 +31,7 @@ CONFIG = {
     "IMAGE_SIZE":        224,
     "BATCH_SIZE":        16,
 
-    "MODELS_TO_ANALYZE": ["ResNet50V2"],  # or None for all
+    "MODELS_TO_ANALYZE": ["ResNet50V2"], 
 
     # Samples per class in the main grid
     "N_PER_CLASS": 4,
@@ -447,7 +437,7 @@ def save_failure_cases(model_name, model, test_gen, classes,
 
 
 ############################################################
-# 3. PER-CLASS CONFIDENCE PLOT  (improved styling)
+# 3. PER-CLASS CONFIDENCE PLOT 
 ############################################################
 
 def save_confidence_plot(model_name, model, test_gen, classes, out_dir):
@@ -510,7 +500,7 @@ def save_confidence_plot(model_name, model, test_gen, classes, out_dir):
 
 
 ############################################################
-# 4. GRADCAM vs GRADCAM++ COMPARISON  (new in v2)
+# 4. GRADCAM vs GRADCAM++ COMPARISON 
 ############################################################
 
 def save_method_comparison(model_name, model, test_gen, classes,
@@ -605,7 +595,7 @@ def save_method_comparison(model_name, model, test_gen, classes,
 
 
 ############################################################
-# 5. OPTIC DISC CROP ANALYSIS  (glaucoma-specific, new in v2)
+# 5. OPTIC DISC CROP ANALYSIS  (glaucoma-specific)
 ############################################################
 
 def save_optic_disc_analysis(model_name, model, test_gen, classes,
