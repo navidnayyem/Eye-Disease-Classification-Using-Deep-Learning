@@ -2,6 +2,10 @@
 
 > Multi-class fundus image classification across 4 eye diseases using 5 pretrained CNN architectures with GradCAM++ interpretability analysis.
 
+[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.12-orange)](https://www.tensorflow.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+
 ---
 
 ## Table of Contents
@@ -15,6 +19,7 @@
 - [Key Findings](#key-findings)
 - [How to Run](#how-to-run)
 - [Requirements](#requirements)
+- [References](#references)
 
 ---
 
@@ -22,7 +27,7 @@
 
 Early detection of eye diseases is critical for preventing irreversible vision loss. This project builds and evaluates a deep learning pipeline for automated classification of retinal fundus images into four categories: **cataract**, **diabetic retinopathy**, **glaucoma**, and **normal**.
 
-Five state-of-the-art CNN architectures are benchmarked under identical conditions. Beyond accuracy metrics, the project uses **GradCAM++** to produce visual explanations of model decisions — verifying that the model attends to clinically relevant anatomical regions rather than image artefacts.
+Five state-of-the-art CNN architectures are benchmarked under identical conditions. Beyond accuracy metrics, the project uses **GradCAM++** to produce visual explanations of model decisions — verifying that the model attends to clinically relevant anatomical regions rather than image artefacts. A standalone prediction script allows inference on new images with optional GradCAM++ heatmap output.
 
 ---
 
@@ -50,18 +55,35 @@ The dataset is well-balanced across classes. All images are colour fundus photog
 ## Project Structure
 
 ```
-├── train.py                  # Full training pipeline
-├── gradcam_analysis.py    # GradCAM++ interpretability analysis
+├── train.py                      # Full training pipeline (5 models)
+├── gradcam_analysis.py        # GradCAM++ interpretability analysis
+├── predict.py                    # Inference on new images with GradCAM++
+├── requirements.txt
 ├── output/
-│   ├── models/               # Saved .keras model checkpoints
-│   ├── plots/                # Training curves, confusion matrices, ROC curves
-│   ├── gradcam/           # GradCAM++ outputs
+│   ├── models/                   # Saved .keras model checkpoints
+│   │   ├── ResNet50V2_best.keras
+│   │   ├── Xception_best.keras
+│   │   ├── InceptionV3_best.keras
+│   │   ├── DenseNet121_best.keras
+│   │   └── NASNetMobile_best.keras
+│   ├── plots/                    # Training curves, confusion matrices, ROC curves
+│   │   └── {model_name}/
+│   │       ├── *_accuracy.pdf
+│   │       ├── *_loss.pdf
+│   │       ├── *_auc.pdf
+│   │       ├── *_confusion_matrix.pdf
+│   │       └── *_roc_curve.pdf
+│   ├── gradcam/               # GradCAM++ outputs
 │   │   ├── *_gradcam_grid.png
 │   │   ├── *_failure_cases.png
 │   │   ├── *_method_comparison.png
 │   │   ├── *_optic_disc.png
 │   │   └── *_confidence.pdf
-│   ├── results_summary.csv   # All model metrics
+│   ├── predictions/              # predict.py outputs
+│   │   ├── *_prediction.png
+│   │   ├── *_result.json
+│   │   └── random_sample_summary.csv
+│   ├── results_summary.csv       # All model metrics
 │   └── class_indices.json
 ```
 
@@ -223,7 +245,7 @@ dataset/
 
 ### 3. Update paths in config
 
-Edit the `CONFIG` dictionary at the top of `train.py` to point to your dataset and output directories.
+Edit the `CONFIG` dictionary at the top of `train.py`, `gradcam_analysis.py`, and `prediction.py` to point to your dataset and output directories.
 
 ### 4. Train all models
 
@@ -239,7 +261,42 @@ Training runs all 5 models sequentially. With 2× GPU it takes approximately 3�
 python gradcam_analysis.py
 ```
 
-Outputs are saved to `output/gradcam/`.
+Outputs are saved to `output/gradcam/`. Generates 5 figures per model:
+- `*_gradcam_grid.png` — GradCAM++ heatmaps for each class
+- `*_failure_cases.png` — top 6 most confident wrong predictions
+- `*_method_comparison.png` — GradCAM vs GradCAM++ side-by-side
+- `*_optic_disc.png` — glaucoma optic disc crop analysis
+- `*_confidence.pdf` — per-class confidence split chart
+
+### 6. Run predictions on new images
+
+```bash
+# Auto mode — picks 3 random images per class from the test set
+python predict.py
+
+# Single image
+python prediction.py --image path/to/fundus_image.jpg
+
+# Single image with GradCAM++ heatmap
+python prediction.py --image path/to/fundus_image.jpg --gradcam
+
+# Batch — all images in a folder
+python prediction.py --folder path/to/folder/ --gradcam
+
+# Use a specific model
+python prediction.py --image fundus.jpg --model InceptionV3
+
+# Pick 5 random images per class instead of 3
+python prediction.py --n 5
+
+# Reproducible random selection
+python prediction.py --seed 42
+```
+
+Each prediction saves:
+- `*_prediction.png` — fundus image + confidence bar chart + correct/wrong label
+- `*_result.json` — structured result with confidence tier and recommended action
+- `random_sample_summary.csv` — batch summary across all predictions
 
 ---
 
