@@ -4,7 +4,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.12-orange)](https://www.tensorflow.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
 
