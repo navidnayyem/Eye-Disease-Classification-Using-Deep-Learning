@@ -1,0 +1,21 @@
+{
+  "image": "_280_7239687.jpg",
+  "model": "ResNet50V2",
+  "timestamp": "2026-03-28T15:49:09.798744",
+  "true_class": "glaucoma",
+  "correct": true,
+  "predicted_class": "glaucoma",
+  "predicted_label": "Glaucoma",
+  "confidence": 0.5635,
+  "confidence_tier": "Low confidence \u2014 do NOT rely on this result",
+  "severity": "Progressive",
+  "description": "Optic nerve damage often caused by raised intraocular pressure.",
+  "recommended_action": "Early treatment can prevent further vision loss. See a specialist.",
+  "all_probabilities": {
+    "glaucoma": 0.5635,
+    "normal": 0.4294,
+    "cataract": 0.005,
+    "diabetic_retinopathy": 0.0022
+  },
+  "disclaimer": "This is an AI screening tool only. It does not replace professional medical diagnosis. Always consult a qualified ophthalmologist."
+}

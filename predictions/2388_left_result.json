@@ -1,0 +1,21 @@
+{
+  "image": "2388_left.jpg",
+  "model": "ResNet50V2",
+  "timestamp": "2026-03-28T15:49:11.067651",
+  "true_class": "normal",
+  "correct": true,
+  "predicted_class": "normal",
+  "predicted_label": "Normal",
+  "confidence": 0.4873,
+  "confidence_tier": "Low confidence \u2014 do NOT rely on this result",
+  "severity": "None",
+  "description": "No signs of the screened eye diseases detected.",
+  "recommended_action": "Routine annual eye examination recommended.",
+  "all_probabilities": {
+    "normal": 0.4873,
+    "glaucoma": 0.4625,
+    "diabetic_retinopathy": 0.0454,
+    "cataract": 0.0048
+  },
+  "disclaimer": "This is an AI screening tool only. It does not replace professional medical diagnosis. Always consult a qualified ophthalmologist."
+}
